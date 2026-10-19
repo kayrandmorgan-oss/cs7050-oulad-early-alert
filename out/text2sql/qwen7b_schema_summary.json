@@ -1,0 +1,13 @@
+{
+  "tag": "qwen7b_schema",
+  "model": "Qwen2.5-Coder-7B-Instruct-Q4_K_M",
+  "condition": "schema",
+  "n": 40,
+  "execution_match": 0.475,
+  "invalid_sql_rate": 0.225,
+  "agg_navigation_rate": 0.9090909090909091,
+  "agg_eligible_n": 22,
+  "match_on_agg_eligible": 0.36363636363636365,
+  "match_on_other": 0.6111111111111112,
+  "mean_seconds_per_question": 56.575
+}

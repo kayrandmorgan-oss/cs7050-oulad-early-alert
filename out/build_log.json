@@ -1,0 +1,266 @@
+{
+  "steps": [
+    {
+      "step": "create schema",
+      "seconds": 0.29
+    },
+    {
+      "step": "stg_courses (22 rows)",
+      "seconds": 0.07
+    },
+    {
+      "step": "stg_assessments (206 rows)",
+      "seconds": 0.02
+    },
+    {
+      "step": "stg_vle (6,364 rows)",
+      "seconds": 0.3
+    },
+    {
+      "step": "stg_student_info (32,593 rows)",
+      "seconds": 1.61
+    },
+    {
+      "step": "stg_student_registration (32,593 rows)",
+      "seconds": 0.74
+    },
+    {
+      "step": "stg_student_assessment (173,912 rows)",
+      "seconds": 2.87
+    },
+    {
+      "step": "stg_student_vle chunked pandas (10,655,280 rows)",
+      "seconds": 213.84
+    },
+    {
+      "step": "dim_presentation",
+      "seconds": 0.0
+    },
+    {
+      "step": "dim_student  [D3 imd_band '10-20' -> '10-20%', NULL -> 'Unknown']",
+      "seconds": 0.35
+    },
+    {
+      "step": "dim_enrollment  [D4 age_band kept per enrollment; D5 registration dates kept NULL when missing]",
+      "seconds": 1.01
+    },
+    {
+      "step": "dim_course_week  [D6 relative week = FLOOR(day/7)+1; range spans every day seen in either fact source]",
+      "seconds": 10.98
+    },
+    {
+      "step": "dim_activity  [D7 activity_type hierarchy; member 0 represents a zero-activity week]",
+      "seconds": 0.01
+    },
+    {
+      "step": "dim_assessment  [D2 11 exams with no date -> last day of presentation, flagged]",
+      "seconds": 0.0
+    },
+    {
+      "step": "lookup tables for the clickstream transform",
+      "seconds": 0.06
+    },
+    {
+      "step": "fact_vle_weekly (clicked rows)  [D8 duplicate natural-key rows are summed, not dropped]",
+      "seconds": 103.71
+    },
+    {
+      "step": "agg_enrollment_week (clicked weeks, from staging so active_days is exact)",
+      "seconds": 72.28
+    },
+    {
+      "step": "registered-span calendar  [D9 zero-activity rows only inside the registered span]",
+      "seconds": 4.86
+    },
+    {
+      "step": "fact_vle_weekly (zero-activity rows)",
+      "seconds": 11.75
+    },
+    {
+      "step": "agg_enrollment_week (zero-activity rows)",
+      "seconds": 5.82
+    },
+    {
+      "step": "agg_pres_week_activity",
+      "seconds": 9.98
+    },
+    {
+      "step": "dim_enrollment.has_vle_activity",
+      "seconds": 1.47
+    },
+    {
+      "step": "fact_assessment_submission  [D10 banked kept + flagged; D11 missing score kept NULL]",
+      "seconds": 5.77
+    },
+    {
+      "step": "foreign keys on facts (added after bulk load)",
+      "seconds": 43.01
+    },
+    {
+      "step": "drop working tables",
+      "seconds": 0.07
+    },
+    {
+      "step": "feature-mart views (v_features_week4, v_audit_attributes)",
+      "seconds": 0.01
+    }
+  ],
+  "total_seconds": 552.7,
+  "table_rows": {
+    "dim_presentation": 22,
+    "dim_student": 28785,
+    "dim_enrollment": 32593,
+    "dim_course_week": 91,
+    "dim_activity": 21,
+    "dim_assessment": 206,
+    "fact_vle_weekly": 2868819,
+    "fact_assessment_submission": 173912,
+    "agg_pres_week_activity": 9253,
+    "agg_enrollment_week": 977680,
+    "fact_vle_weekly_zero_rows": 350649
+  },
+  "reconciliation": [
+    {
+      "check": "R00 stg_courses rows = courses.csv lines",
+      "expected": "22",
+      "actual": "22"
+    },
+    {
+      "check": "R00 stg_assessments rows = assessments.csv lines",
+      "expected": "206",
+      "actual": "206"
+    },
+    {
+      "check": "R00 stg_vle rows = vle.csv lines",
+      "expected": "6364",
+      "actual": "6364"
+    },
+    {
+      "check": "R00 stg_student_info rows = studentInfo.csv lines",
+      "expected": "32593",
+      "actual": "32593"
+    },
+    {
+      "check": "R00 stg_student_registration rows = studentRegistration.csv lines",
+      "expected": "32593",
+      "actual": "32593"
+    },
+    {
+      "check": "R00 stg_student_assessment rows = studentAssessment.csv lines",
+      "expected": "173912",
+      "actual": "173912"
+    },
+    {
+      "check": "R00 stg_student_vle rows = studentVle.csv lines",
+      "expected": "10655280",
+      "actual": "10655280"
+    },
+    {
+      "check": "R00 studentVle.csv click total = fact clicks",
+      "expected": "39605099",
+      "actual": "39605099"
+    },
+    {
+      "check": "R01 total clicks fact = studentVle",
+      "expected": "39605099",
+      "actual": "39605099"
+    },
+    {
+      "check": "R02 interaction rows fact = studentVle rows",
+      "expected": "10655280",
+      "actual": "10655280"
+    },
+    {
+      "check": "R03 dim_student = distinct studentInfo students",
+      "expected": "28785",
+      "actual": "28785"
+    },
+    {
+      "check": "R04 dim_enrollment = studentInfo rows",
+      "expected": "32593",
+      "actual": "32593"
+    },
+    {
+      "check": "R05 fact_assessment rows = studentAssessment rows",
+      "expected": "173912",
+      "actual": "173912"
+    },
+    {
+      "check": "R06 SUM(score) fact = staging",
+      "expected": "13169342.0",
+      "actual": "13169342.0"
+    },
+    {
+      "check": "R07 agg_pres_week_activity clicks = fact",
+      "expected": "39605099",
+      "actual": "39605099"
+    },
+    {
+      "check": "R08 agg_enrollment_week clicks = fact",
+      "expected": "39605099",
+      "actual": "39605099"
+    },
+    {
+      "check": "R09 presentations with click mismatch",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R10 enrollments with VLE activity",
+      "expected": "29228",
+      "actual": "29228"
+    },
+    {
+      "check": "R11 fact_vle_weekly orphan enrollment keys",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R12 fact_assessment orphan assessment keys",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R13 enrollment-weeks with both zero row and clicks",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R14 rows violating click/activity rule",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R15 rows with active_days > 7",
+      "expected": "0",
+      "actual": "0"
+    },
+    {
+      "check": "R16 at-risk count = Fail+Withdrawn",
+      "expected": "17208",
+      "actual": "17208"
+    },
+    {
+      "check": "R17 agg_enrollment_week rows = fact enrollment-weeks",
+      "expected": "977680",
+      "actual": "977680"
+    },
+    {
+      "check": "R18 dim_assessment = assessments rows",
+      "expected": "206",
+      "actual": "206"
+    },
+    {
+      "check": "R19 dim_presentation = courses rows",
+      "expected": "22",
+      "actual": "22"
+    },
+    {
+      "check": "R20 dim_activity = distinct vle activity types + 1",
+      "expected": "21",
+      "actual": "21"
+    }
+  ],
+  "failures": 0,
+  "loader": "chunked pandas"
+}

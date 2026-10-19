@@ -1,0 +1,17 @@
+\begin{table}[H]\centering\small
+\caption{Text-to-SQL results on the 40 held-out questions (22 aggregate-eligible). Execution match = same multiset of rows as the gold query; aggregate navigation = share of aggregate-eligible questions answered from an \tt{agg\_} table.}\label{tab:llm}
+\begin{tabular}{@{}lllrrrr@{}}
+\toprule
+\textbf{Model} & \textbf{Condition} & \textbf{Run} & \textbf{Exec.\ match} & \textbf{Invalid SQL} & \textbf{Agg.\ navigation} & \textbf{s/q} \\ \midrule
+Qwen2.5-Coder-7B (4-bit) & no schema & CPU & 0.0\% (0/40) & 100.0\% & 0.0\% & 29 \\
+Qwen2.5-Coder-7B (4-bit) & schema in prompt & CPU & 47.5\% (19/40) & 22.5\% & 90.9\% & 57 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-1.5B (4-bit) & no schema & CPU & 0.0\% (0/40) & 100.0\% & 0.0\% & 6 \\
+Qwen2.5-Coder-1.5B (4-bit) & schema in prompt & CPU & 15.0\% (6/40) & 75.0\% & 81.8\% & 12 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-1.5B (fp16) & no schema & NRP GPU & \multicolumn{4}{c}{\pending} \\
+Qwen2.5-Coder-1.5B (fp16) & schema in prompt & NRP GPU & \multicolumn{4}{c}{\pending} \\
+Qwen2.5-Coder-1.5B (fp16) & LoRA + schema & NRP GPU & \multicolumn{4}{c}{\pending} \\
+\bottomrule
+\end{tabular}
+\end{table}

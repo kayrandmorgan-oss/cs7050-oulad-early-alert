@@ -1,0 +1,22 @@
+|--- rel_clicks_w1_4 <= -0.34
+|   |--- rel_clicks_w1_4 <= -2.05
+|   |   |--- rel_clicks_w1_4 <= -3.75
+|   |   |   |--- weights: [35.00, 433.00] class: 1
+|   |   |--- rel_clicks_w1_4 >  -3.75
+|   |   |   |--- weights: [122.00, 461.00] class: 1
+|   |--- rel_clicks_w1_4 >  -2.05
+|   |   |--- mod_DDD <= 0.50
+|   |   |   |--- weights: [937.00, 1351.00] class: 1
+|   |   |--- mod_DDD >  0.50
+|   |   |   |--- weights: [186.00, 459.00] class: 1
+|--- rel_clicks_w1_4 >  -0.34
+|   |--- rel_clicks_w1_4 <= 0.28
+|   |   |--- active_weeks_w1_4 <= 3.50
+|   |   |   |--- weights: [361.00, 414.00] class: 1
+|   |   |--- active_weeks_w1_4 >  3.50
+|   |   |   |--- weights: [1047.00, 810.00] class: 0
+|   |--- rel_clicks_w1_4 >  0.28
+|   |   |--- active_days_w1_4 <= 22.50
+|   |   |   |--- weights: [2064.00, 1065.00] class: 0
+|   |   |--- active_days_w1_4 >  22.50
+|   |   |   |--- weights: [701.00, 201.00] class: 0

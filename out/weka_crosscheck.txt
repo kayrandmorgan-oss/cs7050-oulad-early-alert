@@ -1,0 +1,18 @@
+=== weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+Correctly Classified Instances       11269               66.6568 %
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.613     0.296      0.593     0.613     0.603      0.717    1
+Weighted Avg.    0.667     0.349      0.668     0.667     0.667      0.717
+ 2699 4275 |    b = 1
+=== weka.classifiers.trees.J48 -C 0.25 -M 50
+Correctly Classified Instances       11027               65.2254 %
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.605     0.315      0.575     0.605     0.589      0.685    1
+Weighted Avg.    0.652     0.362      0.655     0.652     0.653      0.685
+ 2755 4219 |    b = 1
+=== weka.classifiers.bayes.NaiveBayes
+Correctly Classified Instances        9855               58.2929 %
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.778     0.554      0.496     0.778     0.606      0.682    1
+Weighted Avg.    0.583     0.359      0.64      0.583     0.577      0.682
+ 1545 5429 |    b = 1

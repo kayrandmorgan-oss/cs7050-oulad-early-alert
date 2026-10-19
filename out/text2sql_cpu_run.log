@@ -1,0 +1,628 @@
+ * Stopping MySQL database server mysqld
+   ...done.
+T01 430.9 SELECT SUM(total_clicks) AS total_vle_clicks FROM agg_enrollment_week
+T02 34.1 SELECT 
+    p.code_module, 
+    SUM(e.total_clicks) AS total_clicks
+FROM 
+    dim_presentation p
+JOI
+T03 48.3 SELECT 
+  dim_presentation.code_presentation, 
+  SUM(agg_pres_week_activity.total_clicks) AS total_c
+T04 36.0 SELECT a.activity_type, SUM(av.total_clicks) AS total_clicks
+FROM dim_activity a
+JOIN agg_pres_week_
+T05 57.4 SELECT 
+    a.activity_group, 
+    SUM(aw.total_clicks) AS total_clicks
+FROM 
+    dim_activity a
+JOI
+T06 64.2 SELECT 
+  cw.week_num, 
+  SUM(aw.total_clicks) AS total_clicks
+FROM 
+  dim_course_week cw
+JOIN 
+  ag
+T07 23.4 SELECT code_presentation, COUNT(*) AS student_count
+FROM dim_enrollment
+WHERE code_module = 'AAA'
+GR
+T08 41.4 SELECT 
+  code_module, 
+  ROUND(SUM(CASE WHEN final_result = 'Withdrawn' THEN 1 ELSE 0 END) / COUNT(
+T09 27.8 SELECT final_result, COUNT(*) AS student_count
+FROM dim_enrollment
+WHERE code_presentation = 'CCC-20
+T10 71.6 SELECT 
+  dim_presentation.code_module, 
+  ROUND(AVG(fact_assessment_submission.score), 1) AS avg_tm
+T11 53.6 SELECT 
+    a.assessment_type, 
+    ROUND(SUM(CASE WHEN fs.is_late = 1 THEN 1 ELSE 0 END) / COUNT(fs
+T12 46.0 SELECT COUNT(DISTINCT student_key) 
+FROM fact_vle_weekly 
+WHERE presentation_key = (SELECT presentat
+T13 75.0 SELECT 
+    p.code_presentation,
+    ROUND(SUM(aw.total_clicks) / COUNT(e.enrollment_key), 1) AS avg
+T14 49.1 SELECT 
+  p.code_presentation, 
+  SUM(e.total_clicks) AS total_clicks
+FROM 
+  dim_presentation p
+JOI
+T15 64.6 SELECT 
+    p.code_presentation,
+    SUM(a.total_clicks) AS total_clicks
+FROM 
+    dim_presentation 
+T16 59.0 SELECT 
+    e.outcome_group,
+    ROUND(AVG(aw.total_clicks), 1) AS avg_total_clicks
+FROM 
+    dim_en
+T17 55.9 SELECT 
+  p.module_presentation, 
+  COUNT(e.student_key) AS zero_click_students
+FROM 
+  dim_presenta
+T18 41.5 SELECT ROUND(AVG(active_days), 2) AS avg_active_days
+FROM fact_vle_weekly
+WHERE week_key = 2 AND pre
+T19 42.6 SELECT 
+  s.gender, 
+  SUM(e.total_clicks) AS total_clicks
+FROM 
+  dim_student s
+JOIN 
+  dim_enrollm
+T20 22.6 SELECT highest_education, COUNT(*) AS count
+FROM dim_enrollment
+WHERE final_result = 'Distinction'
+G
+T21 63.0 SELECT 
+    a.id_assessment,
+    a.due_day,
+    ROUND(AVG(fs.score), 1) AS mean_score
+FROM 
+    dim_
+T22 34.9 SELECT 
+  code_module, 
+  code_presentation, 
+  SUM(total_clicks) AS total_clicks
+FROM 
+  agg_pres_w
+T23 53.5 SELECT 
+    p.module_presentation, 
+    ROUND(SUM(e.total_clicks) / COUNT(DISTINCT e.student_key), 1
+T24 47.9 SELECT 
+  dim_presentation.code_module, 
+  dim_assessment.assessment_type, 
+  COUNT(dim_assessment.a
+T25 51.7 SELECT 
+    dim_presentation.code_module, 
+    ROUND(AVG(fact_assessment_submission.days_from_due), 
+T26 35.8 SELECT 
+    c.phase, 
+    SUM(a.total_clicks) AS total_clicks
+FROM 
+    dim_course_week c
+JOIN 
+    
+T27 49.6 SELECT COUNT(enrollment_key)
+FROM agg_enrollment_week
+WHERE presentation_key = (SELECT presentation_
+T28 46.4 SELECT 
+  num_of_prev_attempts, 
+  COUNT(*) AS count, 
+  ROUND(SUM(CASE WHEN final_result = 'Withdra
+T29 52.1 SELECT 
+  a.activity_group, 
+  ROUND(SUM(av.total_clicks) / SUM(av.total_clicks) * 100, 1) AS percen
+T30 24.4 SELECT final_result, ROUND(AVG(studied_credits), 1) AS avg_studied_credits
+FROM dim_enrollment
+GROUP
+T31 41.7 SELECT 
+    p.term_name, 
+    SUM(a.total_clicks) AS total_clicks
+FROM 
+    dim_presentation p
+JOIN 
+T32 26.6 SELECT code_module, COUNT(*) AS distinction_count
+FROM dim_enrollment
+WHERE final_result = 'Distinct
+T33 108.3 SELECT 
+    a.activity_group,
+    COALESCE(SUM(CASE WHEN w.week_num = 1 THEN e.total_clicks ELSE 0 E
+T34 49.2 SELECT 
+    p.module_presentation,
+    ROUND(AVG(s.score), 1) AS average_score
+FROM 
+    dim_present
+T35 42.4 SELECT 
+    p.module_presentation, 
+    COUNT(DISTINCT s.student_key) AS student_count
+FROM 
+    dim
+T36 61.2 SELECT 
+    e.outcome_group, 
+    SUM(a.total_clicks) AS total_clicks
+FROM 
+    dim_enrollment e
+JOI
+T37 25.6 SELECT MAX(sum_click) AS max_clicks
+FROM fact_vle_weekly
+WHERE code_presentation = 'FFF-2014J'
+T38 30.1 SELECT COUNT(DISTINCT activity_key) AS distinct_activity_types
+FROM agg_pres_week_activity
+WHERE cod
+T39 24.7 SELECT code_module, COUNT(*) AS enrollment_count
+FROM dim_enrollment
+WHERE date_registration < -100
+
+T40 48.9 SELECT 
+  e.final_result, 
+  ROUND(AVG(aw.total_clicks), 1) AS avg_total_clicks
+FROM 
+  dim_enrollme
+wrote /home/claude/proj/out/text2sql/qwen7b_schema.generated.jsonl
+T01 23.3 SELECT SUM(vle_clicks) AS total_vle_clicks FROM oulad_dw.vle
+T02 14.7 SELECT code_module, COUNT(*) AS total_clicks
+FROM oulad_dw
+GROUP BY code_module
+T03 20.8 SELECT code_presentation, SUM(clicks) AS total_clicks
+FROM oulad_dw
+WHERE module = 'BBB'
+GROUP BY co
+T04 22.6 SELECT activity_type, SUM(clicks) AS total_clicks
+FROM oulad_dw.activity_log
+GROUP BY activity_type
+
+T05 23.7 SELECT activity_group, SUM(clicks) AS total_clicks
+FROM oulad_dw.presentation_clicks
+WHERE activity_
+T06 30.4 SELECT week_num, SUM(clicks) AS total_clicks
+FROM oulad_dw.presentation_clicks
+WHERE presentation_id
+T07 22.0 SELECT code_presentation, COUNT(*) AS student_count
+FROM oulad_dw.student_module
+WHERE module_code =
+T08 35.8 SELECT 
+    code_module, 
+    ROUND(SUM(CASE WHEN event_name = 'Withdrawn' THEN 1 ELSE 0 END) / COUN
+T09 22.6 SELECT final_result, COUNT(*) AS count
+FROM oulad_dw
+WHERE presentation = 'CCC-2014J'
+GROUP BY final
+T10 24.8 SELECT code_module, ROUND(AVG(score), 1) AS average_score
+FROM oulad_dw
+WHERE submission_type != 'ba
+T11 33.8 SELECT 
+    assessment_type, 
+    ROUND(SUM(CASE WHEN submission_date > due_date THEN 1 ELSE 0 END) 
+T12 29.0 SELECT COUNT(DISTINCT student_id) AS distinct_students
+FROM oulad_dw.activity_log
+WHERE course_id = 
+T13 39.1 SELECT 
+    code_presentation, 
+    ROUND(SUM(total_clicks) / COUNT(DISTINCT student_id), 1) AS valu
+T14 34.0 SELECT code_presentation, SUM(clicks) AS total_clicks
+FROM oulad_dw.clicks
+JOIN oulad_dw.sessions ON
+T15 38.7 SELECT code_presentation, SUM(total_clicks) AS total_clicks
+FROM oulad_dw.activity_log
+WHERE module_
+T16 46.6 SELECT 
+    outcome_group, 
+    ROUND(AVG(COALESCE(total_clicks, 0)), 1) AS avg_total_clicks
+FROM 
+ 
+T17 24.1 SELECT module_presentation, COUNT(*) AS zero_clicks_count
+FROM oulad_dw.student_module_activity
+WHER
+T18 32.3 SELECT ROUND(AVG(active_days), 2) AS average_active_days
+FROM oulad_dw.student_course_activity
+WHERE
+T19 28.9 SELECT 
+    s.gender, 
+    SUM(p.clicks) AS total_clicks
+FROM 
+    oulad_dw.student s
+JOIN 
+    oula
+T20 22.6 SELECT highest_education, COUNT(*) AS number_of_enrollments
+FROM oulad_dw.enrollments
+WHERE result =
+T21 43.1 SELECT 
+    id_assessment, 
+    due_day, 
+    ROUND(AVG(score), 1) AS mean_score
+FROM 
+    oulad_dw.
+T22 31.4 SELECT 
+    code_module, 
+    code_presentation, 
+    SUM(clicks) AS total_clicks
+FROM 
+    oulad_dw
+T23 30.4 SELECT module_presentation, ROUND(SUM(total_clicks) / SUM(enrolled_students), 1) AS avg_clicks_per_s
+T24 19.0 SELECT code_module, assessment_type, COUNT(*) AS count
+FROM oulad_dw.assessments
+GROUP BY code_modul
+T25 27.5 SELECT code_module, ROUND(AVG(DATEDIFF(submission_date, due_date)), 1) AS average_days_late
+FROM oul
+T26 21.3 SELECT 
+    course_phase, 
+    SUM(total_clicks) AS total_clicks
+FROM 
+    oulad_dw.course_clicks
+GR
+T27 37.7 SELECT COUNT(DISTINCT student_id)
+FROM oulad_dw.student_course_week_clicks
+WHERE course_id = 'DDD-20
+T28 39.5 SELECT 
+    num_of_prev_attempts, 
+    COUNT(*) AS count, 
+    ROUND(SUM(CASE WHEN withdrawal = 1 TH
+T29 39.8 SELECT 
+    activity_group, 
+    ROUND(SUM(clicks) / (SELECT SUM(clicks) FROM oulad_dw WHERE activit
+T30 20.2 SELECT final_result, ROUND(AVG(studied_credits), 1) AS average_credits
+FROM oulad_dw
+GROUP BY final_
+T31 27.1 SELECT 
+    term_name, 
+    SUM(clicks) AS total_clicks
+FROM 
+    oulad_dw.presentations
+WHERE 
+    
+T32 20.3 SELECT code_module, COUNT(DISTINCT result) AS count
+FROM oulad_dw
+WHERE year = 2014
+GROUP BY code_mo
+T33 58.4 SELECT 
+    activity_group,
+    SUM(CASE WHEN week = 1 THEN clicks ELSE 0 END) AS week1,
+    SUM(CAS
+T34 20.5 SELECT module_presentation, ROUND(AVG(exam_score), 1) AS average_score
+FROM oulad_dw
+GROUP BY module
+T35 20.7 SELECT module_presentation, COUNT(DISTINCT student_id) AS count
+FROM submissions
+WHERE submission_ti
+T36 23.7 SELECT outcome_group, SUM(clicks) AS total_clicks
+FROM oulad_dw.oucontent
+WHERE activity_type = 'BBB
+T37 21.2 SELECT MAX(clicks) AS max_clicks
+FROM oulad_dw.student_course_week
+WHERE course_id LIKE 'FFF-2014J%'
+T38 25.3 SELECT COUNT(DISTINCT activity_type) AS distinct_activity_types
+FROM oulad_dw.activity_log
+WHERE eve
+T39 25.7 SELECT code_module, COUNT(*) AS count
+FROM oulad_dw.enrollments
+WHERE date_registration < DATE_SUB(p
+T40 41.6 SELECT 
+    final_result, 
+    ROUND(AVG(COALESCE(total_clicks, 0)), 1) AS avg_total_clicks
+FROM 
+  
+wrote /home/claude/proj/out/text2sql/qwen7b_none.generated.jsonl
+T01 87.5 SELECT SUM(total_clicks) AS total_clicks FROM agg_vle_weekly
+T02 4.7 SELECT code_module, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+GROUP BY code_modu
+T03 6.3 SELECT code_presentation, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE code_m
+T04 6.3 SELECT activity_type, SUM(sum_click) AS total_clicks
+FROM fact_vle_weekly
+GROUP BY activity_type
+ORD
+T05 10.4 SELECT activity_group, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE presentat
+T06 10.7 SELECT week_num, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE presentation_ke
+T07 5.4 SELECT code_presentation, COUNT(*) AS student_count
+FROM dim_presentation
+WHERE code_module = 'AAA'
+
+T08 10.9 SELECT 
+  code_module,
+  ROUND(SUM(CASE WHEN final_result = 'Withdrawn' THEN 1 ELSE 0 END) * 100.0 /
+T09 7.2 SELECT final_result, COUNT(*) 
+FROM dim_enrollment 
+WHERE code_module = 'CCC' AND code_presentation 
+T10 12.3 SELECT 
+  T2.code_module, 
+  ROUND(AVG(T1.score), 1) AS average_score
+FROM 
+  fact_assessment_submis
+T11 9.4 SELECT 
+  assessment_type, 
+  ROUND(SUM(CASE WHEN is_late = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+T12 8.1 SELECT COUNT(DISTINCT student_key) FROM fact_vle_weekly
+WHERE week_key = 1 AND activity_key = (SELEC
+T13 16.2 SELECT 
+  T2.code_presentation, 
+  ROUND(SUM(T1.total_clicks) / COUNT(T2.student_key), 1) AS total_c
+T14 10.1 SELECT code_presentation, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE presen
+T15 13.3 SELECT code_presentation, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE activi
+T16 9.6 SELECT outcome_group, AVG(total_clicks) AS avg_clicks
+FROM agg_pres_week_activity
+WHERE presentation
+T17 11.5 SELECT T2.module_presentation, COUNT(T1.enrollment_key) AS zero_click_students
+FROM fact_vle_weekly 
+T18 19.8 SELECT AVG(active_days) AS avg_active_days
+FROM agg_pres_week_activity
+WHERE presentation_key = (SEL
+T19 5.9 SELECT T1.gender, SUM(T1.total_clicks) AS total_clicks
+FROM agg_enrollment_week AS T1
+GROUP BY T1.ge
+T20 10.2 SELECT T1.highest_education, COUNT(T1.student_key) AS count
+FROM dim_enrollment AS T1
+JOIN dim_stude
+T21 17.5 SELECT 
+  d_assessment.id_assessment,
+  d_assessment.due_day,
+  ROUND(SUM(fas.score) / COUNT(fas.sco
+T22 14.2 WITH ROLLUP AS (
+  SELECT 
+    code_module,
+    code_presentation,
+    SUM(total_clicks) AS total_cl
+T23 13.2 SELECT T2.module_presentation, ROUND(SUM(T1.total_clicks) / COUNT(T1.student_key), 1) AS total_click
+T24 5.1 SELECT code_module, assessment_type, COUNT(*) AS assessment_count
+FROM dim_assessment
+GROUP BY code_
+T25 7.0 SELECT code_module, ROUND(AVG(days_from_due), 1) AS avg_days_late
+FROM fact_assessment_submission
+WH
+T26 4.9 SELECT phase, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+GROUP BY phase
+T27 12.1 SELECT COUNT(DISTINCT student_key) AS num_students
+FROM agg_pres_week_activity
+WHERE presentation_ke
+T28 10.8 SELECT num_of_prev_attempts, COUNT(*) AS total_enrollments, 
+       ROUND(SUM(CASE WHEN final_result
+T29 8.9 SELECT activity_group, ROUND(SUM(total_clicks) * 100.0 / SUM(total_clicks) OVER (), 1) AS percentage
+T30 6.2 SELECT final_result, ROUND(AVG(studied_credits), 1) AS average_studied_credits
+FROM dim_enrollment
+G
+T31 8.2 SELECT term_name, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE presentation_k
+T32 7.7 SELECT code_module, COUNT(*) AS count
+FROM dim_presentation
+WHERE code_presentation LIKE '2014%'
+GRO
+T33 19.3 SELECT 
+  activity_group,
+  SUM(CASE WHEN week_key = 1 THEN sum_click ELSE 0 END) AS week1,
+  SUM(CA
+T34 10.5 SELECT T2.module_presentation, ROUND(AVG(T1.score), 1) AS average_score
+FROM fact_assessment_submiss
+T35 7.4 SELECT code_presentation, COUNT(DISTINCT student_key) AS count
+FROM dim_enrollment
+WHERE final_resul
+T36 9.3 SELECT outcome_group, SUM(total_clicks) AS total_clicks
+FROM agg_pres_week_activity
+WHERE presentati
+T37 14.0 SELECT MAX(total_clicks) AS max_clicks
+FROM agg_pres_week_activity
+WHERE presentation_key = (SELECT 
+T38 8.9 SELECT COUNT(DISTINCT activity_key) FROM fact_vle_weekly WHERE presentation_key = (SELECT presentati
+T39 5.5 SELECT code_module, COUNT(*) 
+FROM dim_enrollment 
+WHERE date_registration < -100 
+GROUP BY code_mod
+T40 12.8 SELECT 
+  T2.final_result, 
+  ROUND(AVG(T1.total_clicks), 1) AS average_clicks
+FROM 
+  agg_pres_week
+wrote /home/claude/proj/out/text2sql/qwen1.5b_schema.generated.jsonl
+T01 5.2 SELECT SUM(VLEClicks) AS TotalVLEClicks
+FROM oulad_dw.vle_clicks
+T02 3.6 SELECT module_code, COUNT(*) AS total_clicks
+FROM oulad_dw
+GROUP BY module_code
+T03 4.7 SELECT code_presentation, SUM(clicks) AS total_clicks
+FROM oulad_dw
+WHERE module = 'BBB'
+GROUP BY co
+T04 5.0 SELECT activity_type, SUM(clicks) as total_clicks
+FROM oulad_dw
+GROUP BY activity_type
+ORDER BY tota
+T05 5.3 SELECT activity_group, SUM(total_clicks) AS total_clicks
+FROM oulad_dw
+WHERE activity_group != 'No-a
+T06 6.9 SELECT week_num, SUM(clicks) AS total_clicks
+FROM oulad_dw
+WHERE presentation_id = 'DDD-2013B'
+  AND
+T07 4.4 SELECT code_presentation, COUNT(*) 
+FROM oulad_dw 
+WHERE module_name = 'AAA' 
+GROUP BY code_presenta
+T08 6.7 SELECT 
+    code_module,
+    ROUND((SUM(amount) / COUNT(*)) * 100, 1) AS percentage
+FROM 
+    oulad_
+T09 4.9 SELECT final_result, COUNT(*) 
+FROM oulad_dw 
+WHERE final_result IN ('CCC-2014J') 
+GROUP BY final_re
+T10 5.1 SELECT code_module, ROUND(AVG(score), 1) AS average_score
+FROM oulad_dw
+WHERE module_type != 'banked
+T11 8.2 SELECT 
+    assessment_type, 
+    ROUND(SUM(CASE WHEN submission_date > due_date THEN 1 ELSE 0 END) 
+T12 5.0 SELECT COUNT(DISTINCT student_id) 
+FROM oulad_dw 
+WHERE course_week = 1 AND activity_type = 'forumng
+T13 11.1 SELECT 
+    code_presentation,
+    ROUND(SUM(clicks) / COUNT(DISTINCT student_id) * 100 / 4, 1) AS c
+T14 5.5 SELECT code_presentation, SUM(clicks) AS total_clicks
+FROM oulad_dw
+WHERE week_num <= 0
+GROUP BY cod
+T15 7.3 SELECT code_presentation, SUM(total_clicks) AS total_clicks
+FROM oulad_dw
+WHERE code_module = 'CCC'
+
+T16 9.5 SELECT 
+    outcome_group,
+    ROUND(AVG(total_clicks), 1) AS average_total_clicks
+FROM 
+    oulad_d
+T17 5.3 SELECT module_presentation, COUNT(*) AS zero_clicks
+FROM oulad_dw
+WHERE course_week = 1 AND clicks =
+T18 12.1 SELECT AVG(T2.active_days) AS average_active_days
+FROM oulad_dw.course_week AS T1
+JOIN oulad_dw.cour
+T19 3.4 SELECT gender, SUM(clicks) AS total_clicks
+FROM oulad_dw
+GROUP BY gender
+T20 4.2 SELECT highest_education, COUNT(*) 
+FROM oulad_dw 
+WHERE result = 'Distinction' 
+GROUP BY highest_ed
+T21 9.6 SELECT id_assessment, due_day, ROUND(AVG(score) - AVG(banked_score), 1) AS mean_score
+FROM oulad_dw
+
+T22 12.0 WITH ROLLUP AS (
+    SELECT 
+        code_module,
+        code_presentation,
+        SUM(clicks) AS 
+T23 7.9 SELECT module_presentation, ROUND(SUM(clicks) / COUNT(enrolled_student), 1) AS total_clicks_per_enro
+T24 3.9 SELECT code_module, assessment_type, COUNT(*) AS assessment_count
+FROM oulad_dw
+GROUP BY code_module
+T25 5.9 SELECT code_module, ROUND(AVG(days_late), 1) AS average_days_late
+FROM oulad_dw
+WHERE submission_dat
+T26 3.7 SELECT phase, SUM(clicks) AS total_clicks
+FROM oulad_dw
+GROUP BY phase
+T27 5.9 SELECT COUNT(DISTINCT student_id) 
+FROM oulad_dw 
+WHERE course_week IN (1, 2, 3, 4) 
+AND click_count
+T28 8.1 SELECT num_of_prev_attempts, COUNT(*) AS enrollments, 
+       ROUND(SUM(CASE WHEN status = 'withdraw
+T29 7.4 SELECT activity_group, 
+       ROUND(SUM(CASE WHEN activity_group != 'no-activity' THEN 1 ELSE 0 END
+T30 4.7 SELECT final_result, ROUND(AVG(studied_credits), 1) AS average_studied_credits
+FROM oulad_dw
+GROUP B
+T31 9.8 SELECT term_name, SUM(clicks) AS total_clicks
+FROM oulad_dw
+WHERE presentation_date BETWEEN '2023-02
+T32 4.7 SELECT code_module, COUNT(*) 
+FROM oulad_dw 
+WHERE presentation_year = 2014 
+GROUP BY code_module
+T33 13.1 SELECT 
+    activity_group,
+    SUM(CASE WHEN course_week = 1 THEN clicks ELSE 0 END) AS week1,
+    
+T34 4.3 SELECT module_presentation, ROUND(AVG(score), 1) AS average_score
+FROM oulad_dw
+GROUP BY module_pres
+T35 4.2 SELECT module_presentation, COUNT(*) 
+FROM oulad_dw 
+WHERE late_submission IS NOT NULL 
+GROUP BY mod
+T36 5.5 SELECT outcome_group, SUM(total_clicks) AS total_clicks
+FROM oulad_dw
+WHERE year = 'BBB-2014B'
+GROUP
+T37 4.6 SELECT MAX(clicks) AS max_clicks
+FROM oulad_dw
+WHERE course_week = 'FFF-2014J'
+T38 8.0 SELECT COUNT(DISTINCT activity_type) 
+FROM oulad_dw 
+WHERE activity_type IN ('Click', 'Other') 
+  AN
+T39 4.7 SELECT code_module, COUNT(*) 
+FROM oulad_dw 
+WHERE date_registration < -100 
+GROUP BY code_module
+T40 6.9 SELECT final_result, AVG(total_clicks) AS average
+FROM oulad_dw
+WHERE module = 'CCC'
+GROUP BY final_
+wrote /home/claude/proj/out/text2sql/qwen1.5b_none.generated.jsonl
+ * Starting MySQL database server mysqld
+su: warning: cannot change directory to /nonexistent: No such file or directory
+   ...done.
+{
+ "tag": "qwen7b_schema",
+ "model": "Qwen2.5-Coder-7B-Instruct-Q4_K_M",
+ "condition": "schema",
+ "n": 40,
+ "execution_match": 0.475,
+ "invalid_sql_rate": 0.225,
+ "agg_navigation_rate": 0.9090909090909091,
+ "agg_eligible_n": 22,
+ "match_on_agg_eligible": 0.36363636363636365,
+ "match_on_other": 0.6111111111111112,
+ "mean_seconds_per_question": 56.575
+}
+{
+ "tag": "qwen7b_none",
+ "model": "Qwen2.5-Coder-7B-Instruct-Q4_K_M",
+ "condition": "none",
+ "n": 40,
+ "execution_match": 0.0,
+ "invalid_sql_rate": 1.0,
+ "agg_navigation_rate": 0.0,
+ "agg_eligible_n": 22,
+ "match_on_agg_eligible": 0.0,
+ "match_on_other": 0.0,
+ "mean_seconds_per_question": 29.105
+}
+{
+ "tag": "qwen1.5b_schema",
+ "model": "Qwen2.5-Coder-1.5B-Instruct-Q4_K_M",
+ "condition": "schema",
+ "n": 40,
+ "execution_match": 0.15,
+ "invalid_sql_rate": 0.75,
+ "agg_navigation_rate": 0.8181818181818182,
+ "agg_eligible_n": 22,
+ "match_on_agg_eligible": 0.045454545454545456,
+ "match_on_other": 0.2777777777777778,
+ "mean_seconds_per_question": 11.9825
+}
+{
+ "tag": "qwen1.5b_none",
+ "model": "Qwen2.5-Coder-1.5B-Instruct-Q4_K_M",
+ "condition": "none",
+ "n": 40,
+ "execution_match": 0.0,
+ "invalid_sql_rate": 1.0,
+ "agg_navigation_rate": 0.0,
+ "agg_eligible_n": 22,
+ "match_on_agg_eligible": 0.0,
+ "match_on_other": 0.0,
+ "mean_seconds_per_question": 6.4575000000000005
+}

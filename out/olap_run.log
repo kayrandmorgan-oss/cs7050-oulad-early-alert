@@ -1,0 +1,11 @@
+Q01  roll-up                    rows=  30 base=   7460.2 ms  agg=    10.8 ms  x 687.9  identical=True
+Q02  drill-down                 rows=  20 base=   6287.8 ms  agg=    10.8 ms  x 583.7  identical=True
+Q03  slice                      rows=   4 base=    364.2 ms
+Q04  dice                       rows=   8 base=    236.1 ms
+Q05  pivot                      rows=  10 base=    298.0 ms  agg=     1.9 ms  x 159.6  identical=True
+Q06  cross-tab                  rows=  10 base=   2745.3 ms  agg=   859.4 ms  x   3.2  identical=True
+Q07  cross-term comparison      rows=  12 base=    339.4 ms  agg=     5.2 ms  x  64.9  identical=True
+Q08  roll-up (hierarchy)        rows=  25 base=   8935.0 ms
+Q09  roll-up on fact 2          rows=  22 base=    356.5 ms
+Q10  drill-across               rows=  22 base=   6731.1 ms  agg=   331.5 ms  x  20.3  identical=True
+Q11  zero-activity analysis     rows=   8 base=   1033.8 ms  agg=   755.9 ms  x   1.4  identical=True

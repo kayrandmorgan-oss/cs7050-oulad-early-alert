@@ -1,0 +1,12 @@
+{
+  "day<28 (expected match)": {
+    "enrollments": 27553,
+    "enrollments_with_any_mismatch": 0
+  },
+  "no cutoff (expected mismatch)": {
+    "enrollments": 27553,
+    "enrollments_with_any_mismatch": 25679
+  },
+  "forbidden_columns_in_feature_list": [],
+  "PASS": true
+}

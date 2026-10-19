@@ -1,0 +1,9 @@
+data/raw/*.csv
+__pycache__/
+*.pyc
+report/*.aux
+report/*.log
+report/*.out
+report/pages/
+models/
+*.gguf

@@ -1,0 +1,59 @@
+[0] schema
+  create schema                                               0.37 s
+[1] staging
+  stg_courses (22 rows)                                       0.06 s
+  stg_assessments (206 rows)                                  0.02 s
+  stg_vle (6,364 rows)                                        0.28 s
+  stg_student_info (32,593 rows)                              1.68 s
+  stg_student_registration (32,593 rows)                      0.87 s
+  stg_student_assessment (173,912 rows)                       3.96 s
+    ... 200,000 rows    ... 400,000 rows    ... 600,000 rows    ... 800,000 rows    ... 1,000,000 rows    ... 1,200,000 rows    ... 1,400,000 rows    ... 1,600,000 rows    ... 1,800,000 rows    ... 2,000,000 rows    ... 2,200,000 rows    ... 2,400,000 rows    ... 2,600,000 rows    ... 2,800,000 rows    ... 3,000,000 rows    ... 3,200,000 rows    ... 3,400,000 rows    ... 3,600,000 rows    ... 3,800,000 rows    ... 4,000,000 rows    ... 4,200,000 rows    ... 4,400,000 rows    ... 4,600,000 rows    ... 4,800,000 rows    ... 5,000,000 rows    ... 5,200,000 rows    ... 5,400,000 rows    ... 5,600,000 rows    ... 5,800,000 rows    ... 6,000,000 rows    ... 6,200,000 rows    ... 6,400,000 rows    ... 6,600,000 rows    ... 6,800,000 rows    ... 7,000,000 rows    ... 7,200,000 rows    ... 7,400,000 rows    ... 7,600,000 rows    ... 7,800,000 rows    ... 8,000,000 rows    ... 8,200,000 rows    ... 8,400,000 rows    ... 8,600,000 rows    ... 8,800,000 rows    ... 9,000,000 rows    ... 9,200,000 rows    ... 9,400,000 rows    ... 9,600,000 rows    ... 9,800,000 rows    ... 10,000,000 rows    ... 10,200,000 rows    ... 10,400,000 rows    ... 10,600,000 rows    ... 10,655,280 rows  stg_student_vle chunked pandas (10,655,280 rows)          267.22 s
+[2] transform + load
+  dim_presentation                                            0.02 s
+  dim_student  [D3 imd_band '10-20' -> '10-20%', NULL -> 'Unknown']     0.50 s
+  dim_enrollment  [D4 age_band kept per enrollment; D5 registration dates kept NULL when missing]     1.27 s
+  dim_course_week  [D6 relative week = FLOOR(day/7)+1; range spans every day seen in either fact source]    15.96 s
+  dim_activity  [D7 activity_type hierarchy; member 0 represents a zero-activity week]     0.01 s
+  dim_assessment  [D2 11 exams with no date -> last day of presentation, flagged]     0.01 s
+  lookup tables for the clickstream transform                 0.08 s
+  fact_vle_weekly (clicked rows)  [D8 duplicate natural-key rows are summed, not dropped]   130.84 s
+  agg_enrollment_week (clicked weeks, from staging so active_days is exact)    95.67 s
+  registered-span calendar  [D9 zero-activity rows only inside the registered span]     8.12 s
+  fact_vle_weekly (zero-activity rows)                       13.97 s
+  agg_enrollment_week (zero-activity rows)                    7.76 s
+  agg_pres_week_activity                                     11.91 s
+  dim_enrollment.has_vle_activity                             1.04 s
+  fact_assessment_submission  [D10 banked kept + flagged; D11 missing score kept NULL]     4.09 s
+  foreign keys on facts (added after bulk load)              63.34 s
+  drop working tables                                         0.17 s
+[3] reconciliation
+  PASS  R00 stg_courses rows = courses.csv lines                expected=22  actual=22
+  PASS  R00 stg_assessments rows = assessments.csv lines        expected=206  actual=206
+  PASS  R00 stg_vle rows = vle.csv lines                        expected=6364  actual=6364
+  PASS  R00 stg_student_info rows = studentInfo.csv lines       expected=32593  actual=32593
+  PASS  R00 stg_student_registration rows = studentRegistration.csv lines expected=32593  actual=32593
+  PASS  R00 stg_student_assessment rows = studentAssessment.csv lines expected=173912  actual=173912
+  PASS  R00 stg_student_vle rows = studentVle.csv lines         expected=10655280  actual=10655280
+  PASS  R00 studentVle.csv click total = fact clicks            expected=39605099  actual=39605099
+  PASS  R01 total clicks fact = studentVle                      expected=39605099  actual=39605099
+  PASS  R02 interaction rows fact = studentVle rows             expected=10655280  actual=10655280
+  PASS  R03 dim_student = distinct studentInfo students         expected=28785  actual=28785
+  PASS  R04 dim_enrollment = studentInfo rows                   expected=32593  actual=32593
+  PASS  R05 fact_assessment rows = studentAssessment rows       expected=173912  actual=173912
+  PASS  R06 SUM(score) fact = staging                           expected=13169342.0  actual=13169342.0
+  PASS  R07 agg_pres_week_activity clicks = fact                expected=39605099  actual=39605099
+  PASS  R08 agg_enrollment_week clicks = fact                   expected=39605099  actual=39605099
+  PASS  R09 presentations with click mismatch                   expected=0  actual=0
+  PASS  R10 enrollments with VLE activity                       expected=29228  actual=29228
+  PASS  R11 fact_vle_weekly orphan enrollment keys              expected=0  actual=0
+  PASS  R12 fact_assessment orphan assessment keys              expected=0  actual=0
+  PASS  R13 enrollment-weeks with both zero row and clicks      expected=0  actual=0
+  PASS  R14 rows violating click/activity rule                  expected=0  actual=0
+  PASS  R15 rows with active_days > 7                           expected=0  actual=0
+  PASS  R16 at-risk count = Fail+Withdrawn                      expected=17208  actual=17208
+  PASS  R17 agg_enrollment_week rows = fact enrollment-weeks    expected=977680  actual=977680
+  PASS  R18 dim_assessment = assessments rows                   expected=206  actual=206
+  PASS  R19 dim_presentation = courses rows                     expected=22  actual=22
+  PASS  R20 dim_activity = distinct vle activity types + 1      expected=21  actual=21
+table rows: {'dim_presentation': 22, 'dim_student': 28785, 'dim_enrollment': 32593, 'dim_course_week': 91, 'dim_activity': 21, 'dim_assessment': 206, 'fact_vle_weekly': 2868819, 'fact_assessment_submission': 173912, 'agg_pres_week_activity': 9253, 'agg_enrollment_week': 977680, 'fact_vle_weekly_zero_rows': 350649}
+TOTAL 723.8 s — 28/28 checks passed

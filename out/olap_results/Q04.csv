@@ -1,0 +1,9 @@
+code_module,outcome_group,activity_group,clicks_per_student
+BBB,Fail/Withdrawn,assessment,3.83
+BBB,Pass/Distinction,assessment,4.97
+BBB,Fail/Withdrawn,communication,53.76
+BBB,Pass/Distinction,communication,88.13
+FFF,Fail/Withdrawn,assessment,63.36
+FFF,Pass/Distinction,assessment,111.05
+FFF,Fail/Withdrawn,communication,93.06
+FFF,Pass/Distinction,communication,186.01

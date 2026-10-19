@@ -1,0 +1,55 @@
+[
+ {
+  "id": "s02_data",
+  "cmd": "ls -lh data/raw/*.csv && wc -l data/raw/*.csv"
+ },
+ {
+  "id": "s03_build",
+  "cmd": "python3 etl/build_warehouse.py"
+ },
+ {
+  "id": "s04_peek",
+  "cmd": "mysql -uoulad -poulad -t oulad_dw -e \"SELECT 'fact_vle_weekly' AS tbl, COUNT(*) AS n_rows FROM fact_vle_weekly UNION ALL SELECT 'fact_assessment_submission', COUNT(*) FROM fact_assessment_submission UNION ALL SELECT 'agg_pres_week_activity', COUNT(*) FROM agg_pres_week_activity UNION ALL SELECT 'agg_enrollment_week', COUNT(*) FROM agg_enrollment_week UNION ALL SELECT 'dim_enrollment', COUNT(*) FROM dim_enrollment; SELECT e.code_module, e.code_presentation, e.id_student, w.week_num, a.activity_type, f.sum_click, f.active_days FROM fact_vle_weekly f JOIN dim_enrollment e USING (enrollment_key) JOIN dim_course_week w USING (week_key) JOIN dim_activity a USING (activity_key) WHERE e.enrollment_key = 151 AND w.week_num BETWEEN 1 AND 4 ORDER BY w.week_num, f.sum_click DESC;\" 2>/dev/null",
+  "shown": "mysql -t oulad_dw -e \"<row counts; one student's weeks 1-4>\""
+ },
+ {
+  "id": "s05_olap",
+  "cmd": "python3 olap/run_olap.py"
+ },
+ {
+  "id": "s05b_q06",
+  "cmd": "python3 -c \"import pandas as pd; print(pd.read_csv('out/olap_results/Q06.csv').to_string(index=False))\"",
+  "shown": "python3 -c \"print(pd.read_csv('out/olap_results/Q06.csv'))\""
+ },
+ {
+  "id": "s07_leak",
+  "cmd": "python3 mining/check_leakage.py"
+ },
+ {
+  "id": "s08_model",
+  "cmd": "python3 mining/model.py"
+ },
+ {
+  "id": "s09_cluster",
+  "cmd": "python3 mining/cluster.py 4 2>/dev/null | stdbuf -oL cut -c1-108",
+  "shown": "python3 mining/cluster.py 4"
+ },
+ {
+  "id": "s10_audit",
+  "cmd": "python3 mining/audit.py 2>/dev/null | head -14",
+  "shown": "python3 mining/audit.py"
+ },
+ {
+  "id": "s11_ex1",
+  "cmd": "python3 text2sql/show_example.py T04"
+ },
+ {
+  "id": "s11_ex2",
+  "cmd": "python3 text2sql/show_example.py T18"
+ },
+ {
+  "id": "s11_score",
+  "cmd": "python3 text2sql/score.py out/text2sql/qwen7b_schema.generated.jsonl --condition schema --model-name Qwen2.5-Coder-7B-Instruct-Q4_K_M | tail -12",
+  "shown": "python3 text2sql/score.py out/text2sql/qwen7b_schema.generated.jsonl --condition schema"
+ }
+]

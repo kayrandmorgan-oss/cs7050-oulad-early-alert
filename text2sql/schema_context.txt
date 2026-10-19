@@ -1,0 +1,169 @@
+-- MySQL 8 star-schema warehouse of the Open University Learning Analytics Dataset.
+-- One row per VLE activity type, grouped into activity_group. activity_key 0 = (no activity), used for zero-click weeks.
+CREATE TABLE dim_activity (
+  activity_key TINYINT UNSIGNED NOT NULL,
+  activity_type VARCHAR(20) NOT NULL,
+  activity_group VARCHAR(16) NOT NULL,
+  PRIMARY KEY (activity_key)
+);
+
+-- One row per assessment (206): TMA, CMA or Exam, with weight and due day.
+CREATE TABLE dim_assessment (
+  assessment_key SMALLINT UNSIGNED NOT NULL,
+  id_assessment INT NOT NULL,
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  assessment_type VARCHAR(5) NOT NULL,
+  weight DECIMAL(5,1) NOT NULL,
+  due_day SMALLINT NOT NULL,
+  due_day_imputed TINYINT NOT NULL,
+  due_week_num SMALLINT NOT NULL,
+  PRIMARY KEY (assessment_key),
+  FOREIGN KEY (presentation_key) REFERENCES dim_presentation(presentation_key)
+);
+
+-- One row per relative course week. week_num 1 = days 0-6 of the presentation; week_num <= 0 is before the start.
+CREATE TABLE dim_course_week (
+  week_key TINYINT UNSIGNED NOT NULL,
+  week_num SMALLINT NOT NULL,
+  week_label VARCHAR(8) NOT NULL,
+  first_day SMALLINT NOT NULL,
+  last_day SMALLINT NOT NULL,
+  phase VARCHAR(12) NOT NULL,
+  is_early_window TINYINT NOT NULL,
+  PRIMARY KEY (week_key)
+);
+
+-- One row per student x module presentation (32,593). Holds final_result and is_at_risk (1 = Fail or Withdrawn). COUNT(*) per presentation = enrolled students.
+CREATE TABLE dim_enrollment (
+  enrollment_key INT UNSIGNED NOT NULL,
+  student_key INT UNSIGNED NOT NULL,
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  id_student INT NOT NULL,
+  code_module CHAR(3) NOT NULL,
+  code_presentation CHAR(5) NOT NULL,
+  age_band VARCHAR(10) NOT NULL,
+  num_of_prev_attempts TINYINT UNSIGNED NOT NULL,
+  studied_credits SMALLINT UNSIGNED NOT NULL,
+  date_registration SMALLINT,
+  date_unregistration SMALLINT,
+  final_result VARCHAR(12) NOT NULL,
+  outcome_group VARCHAR(16) NOT NULL,
+  is_at_risk TINYINT NOT NULL,
+  has_vle_activity TINYINT NOT NULL,
+  PRIMARY KEY (enrollment_key),
+  FOREIGN KEY (presentation_key) REFERENCES dim_presentation(presentation_key),
+  FOREIGN KEY (student_key) REFERENCES dim_student(student_key)
+);
+
+-- One row per module presentation (22). code_presentation like 2013J: year + term (B = February start, J = October start).
+CREATE TABLE dim_presentation (
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  code_module CHAR(3) NOT NULL,
+  code_presentation CHAR(5) NOT NULL,
+  module_presentation CHAR(9) NOT NULL,
+  pres_year SMALLINT NOT NULL,
+  pres_term CHAR(1) NOT NULL,
+  term_name VARCHAR(8) NOT NULL,
+  length_days SMALLINT NOT NULL,
+  n_weeks TINYINT NOT NULL,
+  PRIMARY KEY (presentation_key)
+);
+
+-- One row per student (28,785). Protected attributes (gender, imd_band, disability) are for aggregate audit only.
+CREATE TABLE dim_student (
+  student_key INT UNSIGNED NOT NULL,
+  id_student INT NOT NULL,
+  gender CHAR(1) NOT NULL,
+  region VARCHAR(40) NOT NULL,
+  highest_education VARCHAR(40) NOT NULL,
+  imd_band VARCHAR(10) NOT NULL,
+  disability CHAR(1) NOT NULL,
+  PRIMARY KEY (student_key)
+);
+
+-- GRAIN: one row per submitted assessment (173,912). score 0-100; is_late = submitted after due day; is_banked = carried over from an earlier presentation.
+CREATE TABLE fact_assessment_submission (
+  submission_key INT UNSIGNED NOT NULL,
+  enrollment_key INT UNSIGNED NOT NULL,
+  student_key INT UNSIGNED NOT NULL,
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  assessment_key SMALLINT UNSIGNED NOT NULL,
+  submit_week_key TINYINT UNSIGNED NOT NULL,
+  id_assessment INT NOT NULL,
+  date_submitted SMALLINT NOT NULL,
+  days_from_due SMALLINT NOT NULL,
+  is_late TINYINT NOT NULL,
+  is_banked TINYINT NOT NULL,
+  score DECIMAL(5,1),
+  weighted_score DECIMAL(7,2),
+  PRIMARY KEY (submission_key),
+  FOREIGN KEY (assessment_key) REFERENCES dim_assessment(assessment_key),
+  FOREIGN KEY (enrollment_key) REFERENCES dim_enrollment(enrollment_key),
+  FOREIGN KEY (presentation_key) REFERENCES dim_presentation(presentation_key),
+  FOREIGN KEY (student_key) REFERENCES dim_student(student_key),
+  FOREIGN KEY (submit_week_key) REFERENCES dim_course_week(week_key)
+);
+
+-- GRAIN: one row per enrollment x course week x activity type with clicks, plus one activity_key=0 row with zero clicks for each registered week with no clicks. 2.87M rows; prefer the agg_ tables when the question does not need individual students.
+CREATE TABLE fact_vle_weekly (
+  enrollment_key INT UNSIGNED NOT NULL,
+  week_key TINYINT UNSIGNED NOT NULL,
+  activity_key TINYINT UNSIGNED NOT NULL,
+  student_key INT UNSIGNED NOT NULL,
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  sum_click INT UNSIGNED NOT NULL,
+  interaction_rows INT UNSIGNED NOT NULL,
+  active_days TINYINT UNSIGNED NOT NULL,
+  distinct_sites SMALLINT UNSIGNED NOT NULL,
+  PRIMARY KEY (enrollment_key, week_key, activity_key),
+  FOREIGN KEY (activity_key) REFERENCES dim_activity(activity_key),
+  FOREIGN KEY (enrollment_key) REFERENCES dim_enrollment(enrollment_key),
+  FOREIGN KEY (presentation_key) REFERENCES dim_presentation(presentation_key),
+  FOREIGN KEY (student_key) REFERENCES dim_student(student_key),
+  FOREIGN KEY (week_key) REFERENCES dim_course_week(week_key)
+);
+
+-- AGGREGATE of fact_vle_weekly: one row per enrollment x course week (all activity types combined), including zero-click weeks. Use for per-student weekly totals.
+CREATE TABLE agg_enrollment_week (
+  enrollment_key INT UNSIGNED NOT NULL,
+  week_key TINYINT UNSIGNED NOT NULL,
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  total_clicks INT UNSIGNED NOT NULL,
+  active_days TINYINT UNSIGNED NOT NULL,
+  distinct_sites SMALLINT UNSIGNED NOT NULL,
+  activity_types TINYINT UNSIGNED NOT NULL,
+  PRIMARY KEY (enrollment_key, week_key)
+);
+
+-- AGGREGATE of fact_vle_weekly: one row per presentation x course week x activity type. total_clicks = SUM(sum_click). Use for any click question that does not split by student attributes.
+CREATE TABLE agg_pres_week_activity (
+  presentation_key TINYINT UNSIGNED NOT NULL,
+  week_key TINYINT UNSIGNED NOT NULL,
+  activity_key TINYINT UNSIGNED NOT NULL,
+  total_clicks BIGINT UNSIGNED NOT NULL,
+  active_students INT UNSIGNED NOT NULL,
+  fact_rows INT UNSIGNED NOT NULL,
+  PRIMARY KEY (presentation_key, week_key, activity_key)
+);
+
+-- DATA DICTIONARY (allowed values)
+  dim_activity.activity_type: '(no activity)', 'dataplus', 'dualpane', 'externalquiz', 'folder', 'forumng', 'glossary', 'homepage', 'htmlactivity', 'oucollaborate', 'oucontent', 'ouelluminate', 'ouwiki', 'page', 'questionnaire', 'quiz', 'repeatactivity', 'resource', 'sharedsubpage', 'subpage', 'url'
+  dim_activity.activity_group: 'assessment', 'communication', 'content', 'navigation', 'none'
+  dim_assessment.assessment_type: 'CMA', 'Exam', 'TMA'
+  dim_course_week.phase: 'early (1-4)', 'pre-start', 'weeks 14-26', 'weeks 27+', 'weeks 5-13'
+  dim_enrollment.code_module: 'AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF', 'GGG'
+  dim_enrollment.code_presentation: '2013B', '2013J', '2014B', '2014J'
+  dim_enrollment.age_band: '0-35', '35-55', '55<='
+  dim_enrollment.final_result: 'Distinction', 'Fail', 'Pass', 'Withdrawn'
+  dim_enrollment.outcome_group: 'Fail/Withdrawn', 'Pass/Distinction'
+  dim_presentation.code_module: 'AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF', 'GGG'
+  dim_presentation.code_presentation: '2013B', '2013J', '2014B', '2014J'
+  dim_presentation.pres_term: 'B', 'J'
+  dim_presentation.term_name: 'February', 'October'
+  dim_student.gender: 'F', 'M'
+  dim_student.region: 'East Anglian Region', 'East Midlands Region', 'Ireland', 'London Region', 'North Region', 'North Western Region', 'Scotland', 'South East Region', 'South Region', 'South West Region', 'Wales', 'West Midlands Region', 'Yorkshire Region'
+  dim_student.highest_education: 'A Level or Equivalent', 'HE Qualification', 'Lower Than A Level', 'No Formal quals', 'Post Graduate Qualification'
+  dim_student.imd_band: '0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%', 'Unknown'
+  dim_student.disability: 'N', 'Y'
+  dim_course_week.week_num: integer -3 .. 87
+  dim_presentation.module_presentation: AAA-2013J,AAA-2014J,BBB-2013B,BBB-2013J,BBB-2014B,BBB-2014J,CCC-2014B,CCC-2014J,DDD-2013B,DDD-2013J,DDD-2014B,DDD-2014J,EEE-2013J,EEE-2014B,EEE-2014J,FFF-2013B,FFF-2013J,FFF-2014B,FFF-2014J,GGG-2013J,GGG-2014B,GGG-2014J

@@ -1,0 +1,13 @@
+{
+  "tag": "qwen1.5b_none",
+  "model": "Qwen2.5-Coder-1.5B-Instruct-Q4_K_M",
+  "condition": "none",
+  "n": 40,
+  "execution_match": 0.0,
+  "invalid_sql_rate": 1.0,
+  "agg_navigation_rate": 0.0,
+  "agg_eligible_n": 22,
+  "match_on_agg_eligible": 0.0,
+  "match_on_other": 0.0,
+  "mean_seconds_per_question": 6.4575000000000005
+}

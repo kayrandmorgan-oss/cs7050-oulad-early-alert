@@ -1,0 +1,11 @@
+population 27,553 enrollments; at-risk rate 0.442
+CV  Majority baseline      accuracy=0.558±0.000  precision=0.000±0.000  recall=0.000±0.000  f1=0.000±0.000  roc_auc=0.500±0.000
+CV  Logistic regression    accuracy=0.673±0.003  precision=0.662±0.005  recall=0.530±0.010  f1=0.589±0.006  roc_auc=0.724±0.008
+CV  Decision tree (CART)   accuracy=0.652±0.003  precision=0.634±0.010  recall=0.505±0.039  f1=0.561±0.022  roc_auc=0.689±0.009
+CV  Naive Bayes            accuracy=0.646±0.005  precision=0.646±0.017  recall=0.443±0.032  f1=0.525±0.019  roc_auc=0.692±0.009
+HO  Majority baseline      AUC=0.500 acc@.5=0.587 thr=0.500 P=0.000 R=0.000 F1=0.000
+HO  Logistic regression    AUC=0.719 acc@.5=0.668 thr=0.392 P=0.519 R=0.801 F1=0.630
+HO  Decision tree (CART)   AUC=0.679 acc@.5=0.643 thr=0.426 P=0.501 R=0.761 F1=0.604
+HO  Naive Bayes            AUC=0.692 acc@.5=0.652 thr=0.001 P=0.523 R=0.734 F1=0.611
+temporal AUC {'Logistic regression': 0.7046800071475644, 'Decision tree (CART)': 0.6774029914852181, 'Naive Bayes': 0.6909549785409131}
+best: Logistic regression  lift@top decile 1.94

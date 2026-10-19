@@ -1,0 +1,30 @@
+{
+  "gender": {
+    "flag_rate_min_max_ratio": 0.9601689761763473,
+    "four_fifths_screen_on_flag_rate": true,
+    "tpr_gap": 0.04665626395284794,
+    "fpr_gap": 0.001973807901911595,
+    "actual_rate_min_max_ratio": 0.9336901626168471
+  },
+  "age_band": {
+    "flag_rate_min_max_ratio": 0.6000992309600595,
+    "four_fifths_screen_on_flag_rate": false,
+    "tpr_gap": 0.16565546051322855,
+    "fpr_gap": 0.27025777074553353,
+    "actual_rate_min_max_ratio": 0.7053497321361201
+  },
+  "imd_quintile": {
+    "flag_rate_min_max_ratio": 0.8323639752947444,
+    "four_fifths_screen_on_flag_rate": true,
+    "tpr_gap": 0.09751965948999841,
+    "fpr_gap": 0.05731846769582616,
+    "actual_rate_min_max_ratio": 0.5644455513161505
+  },
+  "disability": {
+    "flag_rate_min_max_ratio": 0.9645256103153246,
+    "four_fifths_screen_on_flag_rate": true,
+    "tpr_gap": 0.00683880574382878,
+    "fpr_gap": 0.013375327101458168,
+    "actual_rate_min_max_ratio": 0.7715521132383493
+  }
+}

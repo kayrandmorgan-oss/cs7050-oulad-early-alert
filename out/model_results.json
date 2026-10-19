@@ -1,0 +1,365 @@
+{
+  "population": 27553,
+  "at_risk_rate": 0.4416216020034116,
+  "n_features": 28,
+  "features": [
+    "num_of_prev_attempts",
+    "studied_credits",
+    "date_registration",
+    "reg_date_missing",
+    "clicks_prestart",
+    "clicks_w1",
+    "clicks_w2",
+    "clicks_w3",
+    "clicks_w4",
+    "clicks_content",
+    "clicks_navigation",
+    "clicks_communication",
+    "clicks_assessment",
+    "active_days_prestart",
+    "active_days_w1_4",
+    "active_weeks_w1_4",
+    "last_active_week",
+    "sites_w4",
+    "n_activity_types",
+    "rel_clicks_w1_4",
+    "trend_w4_vs_w1",
+    "mod_AAA",
+    "mod_BBB",
+    "mod_CCC",
+    "mod_DDD",
+    "mod_EEE",
+    "mod_FFF",
+    "mod_GGG"
+  ],
+  "precision_floor": 0.6,
+  "cv": {
+    "Majority baseline": {
+      "accuracy": {
+        "mean": 0.5583784024098314,
+        "sd": 5.550167803127207e-05
+      },
+      "precision": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "recall": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "f1": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "roc_auc": {
+        "mean": 0.5,
+        "sd": 0.0
+      },
+      "brier": {
+        "mean": 0.4416215975901686,
+        "sd": 5.550167803127207e-05
+      },
+      "flag_rate": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "Logistic regression": {
+      "accuracy": {
+        "mean": 0.6728485085595185,
+        "sd": 0.002656013463086798
+      },
+      "precision": {
+        "mean": 0.6618493675860764,
+        "sd": 0.005304529266550323
+      },
+      "recall": {
+        "mean": 0.5301607147139055,
+        "sd": 0.010106586808238397
+      },
+      "f1": {
+        "mean": 0.5886639616592808,
+        "sd": 0.005585773397506374
+      },
+      "roc_auc": {
+        "mean": 0.7238507693245724,
+        "sd": 0.00816609039342869
+      },
+      "brier": {
+        "mean": 0.20826255541753405,
+        "sd": 0.0027305002364904447
+      },
+      "flag_rate": {
+        "mean": 0.35379091676406305,
+        "sd": 0.008505301963956486
+      }
+    },
+    "Decision tree (CART)": {
+      "accuracy": {
+        "mean": 0.6520884843084002,
+        "sd": 0.00304972680917449
+      },
+      "precision": {
+        "mean": 0.6335557747507996,
+        "sd": 0.010025850903023536
+      },
+      "recall": {
+        "mean": 0.5054204023626114,
+        "sd": 0.03941306250117582
+      },
+      "f1": {
+        "mean": 0.561302341994331,
+        "sd": 0.021552249564948632
+      },
+      "roc_auc": {
+        "mean": 0.689359198633466,
+        "sd": 0.009133860502810532
+      },
+      "brier": {
+        "mean": 0.2177746079664621,
+        "sd": 0.0025332467720144414
+      },
+      "flag_rate": {
+        "mean": 0.35270085468396645,
+        "sd": 0.03254229186345536
+      }
+    },
+    "Naive Bayes": {
+      "accuracy": {
+        "mean": 0.6463544516313027,
+        "sd": 0.004603691840459244
+      },
+      "precision": {
+        "mean": 0.646290564117591,
+        "sd": 0.017467733640912354
+      },
+      "recall": {
+        "mean": 0.4427219406131996,
+        "sd": 0.032237662344271584
+      },
+      "f1": {
+        "mean": 0.5245458976501496,
+        "sd": 0.019250471578101225
+      },
+      "roc_auc": {
+        "mean": 0.6923803142471511,
+        "sd": 0.008683127660565938
+      },
+      "brier": {
+        "mean": 0.3177447386609117,
+        "sd": 0.004699786604502019
+      },
+      "flag_rate": {
+        "mean": 0.30305344763368824,
+        "sd": 0.028074398102899446
+      }
+    }
+  },
+  "holdout": {
+    "n_train": 10647,
+    "n_test": 16906,
+    "at_risk_rate_train": 0.4878369493754109,
+    "at_risk_rate_test": 0.4125162664142908,
+    "Majority baseline": {
+      "default_0.5": {
+        "accuracy": 0.5874837335857093,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5,
+        "brier": 0.4125162664142908,
+        "flag_rate": 0.0
+      },
+      "tuned_threshold": 0.5,
+      "train_oof_at_tuned": null,
+      "tuned": {
+        "accuracy": 0.5874837335857093,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5,
+        "brier": 0.4125162664142908,
+        "flag_rate": 0.0
+      },
+      "confusion_tuned": [
+        [
+          9932,
+          0
+        ],
+        [
+          6974,
+          0
+        ]
+      ]
+    },
+    "Logistic regression": {
+      "default_0.5": {
+        "accuracy": 0.6682834496628416,
+        "precision": 0.5934592227695676,
+        "recall": 0.6218812733008316,
+        "f1": 0.6073379078560426,
+        "roc_auc": 0.7191358868640567,
+        "brier": 0.2120711066858432,
+        "flag_rate": 0.43227256595291613
+      },
+      "tuned_threshold": 0.3924144243176031,
+      "train_oof_at_tuned": {
+        "precision": 0.6000296384113811,
+        "recall": 0.7795533307662688
+      },
+      "tuned": {
+        "accuracy": 0.6120312315154383,
+        "precision": 0.5192790114280406,
+        "recall": 0.801405219386292,
+        "f1": 0.6302080396910413,
+        "roc_auc": 0.7191358868640567,
+        "brier": 0.2120711066858432,
+        "flag_rate": 0.6366378800425885
+      },
+      "confusion_tuned": [
+        [
+          4758,
+          5174
+        ],
+        [
+          1385,
+          5589
+        ]
+      ],
+      "best_params": {
+        "logisticregression__C": 0.01
+      }
+    },
+    "Decision tree (CART)": {
+      "default_0.5": {
+        "accuracy": 0.64302614456406,
+        "precision": 0.5618332674832082,
+        "recall": 0.6117006022368798,
+        "f1": 0.5857074208828174,
+        "roc_auc": 0.6791704164747008,
+        "brier": 0.22264172331576967,
+        "flag_rate": 0.4491304862179108
+      },
+      "tuned_threshold": 0.42592592592592593,
+      "train_oof_at_tuned": {
+        "precision": 0.6075242319697717,
+        "recall": 0.7119753561802079
+      },
+      "tuned": {
+        "accuracy": 0.5886075949367089,
+        "precision": 0.5008969880086866,
+        "recall": 0.7606825351304847,
+        "f1": 0.6040421292342727,
+        "roc_auc": 0.6791704164747008,
+        "brier": 0.22264172331576967,
+        "flag_rate": 0.6264639772861705
+      },
+      "confusion_tuned": [
+        [
+          4646,
+          5286
+        ],
+        [
+          1669,
+          5305
+        ]
+      ],
+      "best_params": {
+        "max_depth": 3,
+        "min_samples_leaf": 50
+      }
+    },
+    "Naive Bayes": {
+      "default_0.5": {
+        "accuracy": 0.6517212823849521,
+        "precision": 0.627885068299576,
+        "recall": 0.38227702896472615,
+        "f1": 0.475222816399287,
+        "roc_auc": 0.6921143861423726,
+        "brier": 0.3200915691241547,
+        "flag_rate": 0.2511534366497102
+      },
+      "tuned_threshold": 0.0006385810141651502,
+      "train_oof_at_tuned": {
+        "precision": 0.6,
+        "recall": 0.7185213708124759
+      },
+      "tuned": {
+        "accuracy": 0.6139832012303325,
+        "precision": 0.5228664761126991,
+        "recall": 0.7344422139374821,
+        "f1": 0.6108527131782946,
+        "roc_auc": 0.6921143861423726,
+        "brier": 0.3200915691241547,
+        "flag_rate": 0.5794392523364486
+      },
+      "confusion_tuned": [
+        [
+          5258,
+          4674
+        ],
+        [
+          1852,
+          5122
+        ]
+      ]
+    }
+  },
+  "threshold_sensitivity_lr": [
+    {
+      "precision_floor": 0.55,
+      "threshold": 0.31207549425684356,
+      "train_precision": 0.5500294637595757,
+      "train_recall": 0.8985367731998459,
+      "test_precision": 0.4683440955986046,
+      "test_recall": 0.9047892170920562,
+      "test_f1": 0.6172054580134005,
+      "test_flag_rate": 0.7969359990535905
+    },
+    {
+      "precision_floor": 0.6,
+      "threshold": 0.3924144243176031,
+      "train_precision": 0.6000296384113811,
+      "train_recall": 0.7795533307662688,
+      "test_precision": 0.5192790114280406,
+      "test_recall": 0.801405219386292,
+      "test_f1": 0.6302080396910413,
+      "test_flag_rate": 0.6366378800425885
+    },
+    {
+      "precision_floor": 0.65,
+      "threshold": 0.46100159247167777,
+      "train_precision": 0.6501027461236689,
+      "train_recall": 0.6700038505968425,
+      "test_precision": 0.5645882352941176,
+      "test_recall": 0.6881273300831661,
+      "test_f1": 0.6202662530696652,
+      "test_flag_rate": 0.5027800780787886
+    },
+    {
+      "precision_floor": 0.7,
+      "threshold": 0.5402986747720687,
+      "train_precision": 0.7001270648030495,
+      "train_recall": 0.5304197150558336,
+      "test_precision": 0.6203598638353056,
+      "test_recall": 0.5487525093203327,
+      "test_f1": 0.5823632351822263,
+      "test_flag_rate": 0.36490003549035843
+    }
+  ],
+  "temporal_2013_to_2014_auc": {
+    "Logistic regression": 0.7046800071475644,
+    "Decision tree (CART)": 0.6774029914852181,
+    "Naive Bayes": 0.6909549785409131
+  },
+  "best_model": "Logistic regression",
+  "best_vs_baseline_accuracy_points": 8.079971607713233,
+  "rule_tree_depth3_auc_test": 0.6791704164747008,
+  "nb_click_feature_corr": {
+    "mean_abs_pairwise_r": 0.570410801310784,
+    "pairs_r_over_0.7": 7,
+    "pairs": 36
+  },
+  "lift_top_decile": 1.9396041764994487,
+  "capture_top_3_deciles": 0.4734728993404072
+}

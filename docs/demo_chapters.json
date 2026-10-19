@@ -1,0 +1,92 @@
+[
+ {
+  "t": 0.0,
+  "step": "",
+  "title": "From Clickstream"
+ },
+ {
+  "t": 7.0,
+  "step": "1/11",
+  "title": "The raw data"
+ },
+ {
+  "t": 17.9,
+  "step": "2/11",
+  "title": "Warehouse design"
+ },
+ {
+  "t": 28.9,
+  "step": "3/11",
+  "title": "One-command rebuild"
+ },
+ {
+  "t": 85.3,
+  "step": "4/11",
+  "title": "Inside the warehouse"
+ },
+ {
+  "t": 100.1,
+  "step": "5/11",
+  "title": "OLAP query pack"
+ },
+ {
+  "t": 137.5,
+  "step": "5/11",
+  "title": "OLAP query pack"
+ },
+ {
+  "t": 149.3,
+  "step": "5/11",
+  "title": "OLAP query pack"
+ },
+ {
+  "t": 159.3,
+  "step": "6/11",
+  "title": "No-leakage check"
+ },
+ {
+  "t": 183.7,
+  "step": "7/11",
+  "title": "Early-alert models"
+ },
+ {
+  "t": 215.1,
+  "step": "7/11",
+  "title": "Early-alert models"
+ },
+ {
+  "t": 225.1,
+  "step": "8/11",
+  "title": "Engagement archetypes"
+ },
+ {
+  "t": 246.5,
+  "step": "8/11",
+  "title": "Engagement archetypes"
+ },
+ {
+  "t": 256.5,
+  "step": "9/11",
+  "title": "Fairness audit"
+ },
+ {
+  "t": 270.7,
+  "step": "10/11",
+  "title": "Text-to-SQL"
+ },
+ {
+  "t": 283.8,
+  "step": "10/11",
+  "title": "Text-to-SQL"
+ },
+ {
+  "t": 297.9,
+  "step": "10/11",
+  "title": "Text-to-SQL"
+ },
+ {
+  "t": 315.8,
+  "step": "",
+  "title": "github.com/kayrandmorgan-oss/"
+ }
+]

@@ -1,0 +1,57 @@
+\textbf{Design.} An open-weight code model writes MySQL for 40 held-out analyst questions. The gold SQL comes from
+the OLAP pack and variants of it (\tt{text2sql/questions\_test.py}). Each question states the columns it expects,
+so ``same rows'' is well defined. Matching is order- and column-order-insensitive, with numbers compared at two
+decimals. 22 questions can be answered exactly from an aggregate table, and they define the
+\emph{aggregate-navigation rate}. The three conditions are:
+\begin{itemize}
+\item \textbf{No schema.} The model gets only the dialect and the question.
+\item \textbf{Schema in prompt.} The context is built \emph{programmatically from the live warehouse}
+(script \tt{schema\_context.py}): compact DDL with keys and foreign keys for the 10 dimension, fact and
+aggregate tables, each table's grain statement read back from its comment, and a data dictionary of every
+low-cardinality value. With the instructions, the prompt is 2,438 tokens. Staging tables are deliberately excluded.
+\item \textbf{LoRA + schema.} The same prompt, after LoRA fine-tuning [5] on 200 (question, SQL) pairs. The pairs
+come from 21 parameterized templates (\tt{text2sql/make\_train\_pairs.py}). Each pair was executed and checked to
+return rows, and none duplicates a test question or its gold SQL.
+\end{itemize}
+
+\textbf{What ran where.} The proposal's degradation path was used for the prompt-only conditions.
+Qwen2.5-Coder-7B-Instruct [6], the proposal's first-choice model, ran as a 4-bit GGUF (Q4\_K\_M) through
+\tt{llama.cpp} on the 2-vCPU build machine, with greedy decoding. The 1.5B sibling ran the same way as a size
+contrast. The LoRA condition needs a GPU. It is packaged for the course's NRP hub (\tt{text2sql/nrp/}): training
+script, the identical prompt, a generate-only evaluator, and a scorer that runs back on the warehouse machine.
+Its rows in Table~\ref{tab:llm} are filled from that run. No LoRA number is reported until it exists.
+
+\input{llm_table.tex}
+
+\textbf{Results.} Schema context is decisive. Without it, neither model produced a single executable query. Every
+attempt invented plausible tables (\tt{oulad\_dw.vle}, \tt{students}, \tt{enrollments}). With the
+warehouse-generated context, the 7B model matched \textbf{19 of 40} questions (47.5\%), and only 9 of its queries
+failed to execute. The 1.5B model matched 6 of 40, and 75\% of its SQL was invalid. On aggregate navigation, the
+7B model reached for an \tt{agg\_} table on 20 of the 22 eligible questions (\textbf{91\%}), scanned the base fact
+on only 2, and every one of its 8 correct aggregate-eligible answers used an aggregate. The grain comments make
+the aggregates \emph{discoverable}: the model knows they exist and when to prefer them. Discoverable is not the
+same as \emph{usable}, though. The 7B model was more accurate on the questions that did \emph{not} involve
+aggregates (61\%, 11/18) than on those that did (36\%, 8/22).
+
+\textbf{Where the design was not legible.} Each of the 7B model's 21 failures was classified by primary cause.
+\begin{itemize}
+\item \textbf{Attribute on the wrong table (9; all of the invalid SQL).} For example, \tt{code\_presentation} on
+an aggregate, \tt{highest\_education} on the enrollment, or \tt{pres\_year} on the enrollment. The model assumes
+denormalized attributes that a strict star schema keeps in the dimensions.
+\item \textbf{Surrogate key used as a value (4).} For example, \tt{week\_key = 2} and \tt{week\_key <= 0}. The
+surrogate key is offset from \tt{week\_num} by 4, so these queries run but return the wrong week.
+\item \textbf{Composite code in the wrong column (2 primary, 7 overall).} For example,
+\tt{code\_presentation = 'CCC-2014J'} where \tt{module\_presentation} was meant.
+\item \textbf{Wrong grain in the arithmetic (6).} Averaging over enrollment-\emph{weeks} instead of students, and
+in one case joining the presentation-level aggregate to enrollments, which multiplies the clicks.
+\end{itemize}
+The second and fourth causes are specific to dimensional design. Integer surrogate keys and pre-aggregated grains
+are exactly what make the warehouse fast and correct for its designer, and exactly what an outside reader
+misreads. The result suggests three inexpensive design changes:
+\begin{itemize}
+\item Carry \tt{week\_num} and \tt{module\_presentation} as degenerate attributes on the aggregates.
+\item State in the dictionary that \tt{week\_key} is not a week number.
+\item Include one worked aggregate query in the context.
+\end{itemize}
+Testing those changes is future work. The LoRA condition tests the other route, which is to teach the model the
+schema's conventions rather than to change the schema.

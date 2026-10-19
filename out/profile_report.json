@@ -1,0 +1,114 @@
+{
+  "rows": {
+    "courses": 22,
+    "assessments": 206,
+    "studentAssessment": 173912,
+    "studentInfo": 32593,
+    "studentRegistration": 32593,
+    "vle": 6364,
+    "studentVle": 10655280
+  },
+  "nulls": {
+    "courses": {},
+    "assessments": {
+      "date": 11
+    },
+    "studentAssessment": {
+      "score": 173
+    },
+    "studentInfo": {
+      "imd_band": 1111
+    },
+    "studentRegistration": {
+      "date_registration": 45,
+      "date_unregistration": 22521
+    },
+    "vle": {
+      "week_from": 5243,
+      "week_to": 5243
+    }
+  },
+  "assess_null_date_types": {
+    "Exam": 11
+  },
+  "imd_band_values": {
+    "20-30%": 3654,
+    "30-40%": 3539,
+    "10-20": 3516,
+    "0-10%": 3311,
+    "40-50%": 3256,
+    "50-60%": 3124,
+    "60-70%": 2905,
+    "70-80%": 2879,
+    "80-90%": 2762,
+    "90-100%": 2536,
+    "NaN": 1111
+  },
+  "final_result": {
+    "Pass": 12361,
+    "Withdrawn": 10156,
+    "Fail": 7052,
+    "Distinction": 3024
+  },
+  "si_dup_keys": 0,
+  "sr_dup_keys": 0,
+  "distinct_students": 28785,
+  "students_multi_enroll": 3538,
+  "students_with_conflicting_demographics": {
+    "gender": 0,
+    "region": 0,
+    "highest_education": 0,
+    "imd_band": 0,
+    "age_band": 72,
+    "disability": 0
+  },
+  "withdrawn_without_unreg": 93,
+  "unreg_but_not_withdrawn": 9,
+  "unreg_before_day0": 3097,
+  "unreg_before_day28": 5040,
+  "sa_unknown_assessment": 0,
+  "sa_without_enrollment": 0,
+  "sa_banked": 1909,
+  "sa_score_range": [
+    0.0,
+    100.0
+  ],
+  "sa_submitted_before_day0": 2057,
+  "vle_activity_types": {
+    "resource": 2660,
+    "subpage": 1055,
+    "oucontent": 996,
+    "url": 886,
+    "forumng": 194,
+    "quiz": 127,
+    "page": 102,
+    "oucollaborate": 82,
+    "questionnaire": 61,
+    "ouwiki": 49,
+    "dataplus": 28,
+    "externalquiz": 26,
+    "homepage": 22,
+    "glossary": 21,
+    "ouelluminate": 21,
+    "dualpane": 20,
+    "repeatactivity": 5,
+    "htmlactivity": 4,
+    "sharedsubpage": 3,
+    "folder": 2
+  },
+  "vle_week_from_nonnull": 1121,
+  "sv_site_not_in_vle": 0,
+  "sv_date_range": [
+    -25,
+    269
+  ],
+  "sv_after_course_end": 0,
+  "sv_pre_start_rows": 688988,
+  "sv_dup_natural_key_rows": 2195960,
+  "sv_total_clicks": 39605099,
+  "sv_max_click": 6977,
+  "sv_distinct_students": 26074,
+  "sv_enrollments": 29228,
+  "sv_enrollment_not_in_si": 0,
+  "si_enrollments_no_clicks": 3365
+}
