@@ -69,14 +69,16 @@ class HFBackend:   # used on NRP / any CUDA machine; optional LoRA adapter
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
         self.tok = AutoTokenizer.from_pretrained(path)
-        self.m = AutoModelForCausalLM.from_pretrained(path, torch_dtype=torch.bfloat16, device_map="auto")
+        dtype = (torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16) if torch.cuda.is_available() else torch.float32
+        self.m = AutoModelForCausalLM.from_pretrained(path, torch_dtype=dtype, device_map="auto")
         if adapter:
             from peft import PeftModel
             self.m = PeftModel.from_pretrained(self.m, adapter)
         self.m.eval()
     def __call__(self, messages):
         import torch
-        ids = self.tok.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(self.m.device)
+        text = self.tok.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+        ids = self.tok(text, return_tensors="pt", add_special_tokens=False).input_ids.to(self.m.device)
         with torch.no_grad():
             out = self.m.generate(ids, max_new_tokens=450, do_sample=False)
         gen = out[0][ids.shape[1]:]
