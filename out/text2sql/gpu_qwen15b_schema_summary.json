@@ -1,0 +1,13 @@
+{
+  "tag": "gpu_qwen15b_schema",
+  "model": "Qwen2.5-Coder-1.5B-Instruct",
+  "condition": "schema",
+  "n": 40,
+  "execution_match": 0.15,
+  "invalid_sql_rate": 0.725,
+  "agg_navigation_rate": 0.5454545454545454,
+  "agg_eligible_n": 22,
+  "match_on_agg_eligible": 0.0,
+  "match_on_other": 0.3333333333333333,
+  "mean_seconds_per_question": 2.2325
+}

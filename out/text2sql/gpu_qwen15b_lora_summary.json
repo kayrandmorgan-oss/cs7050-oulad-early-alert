@@ -1,0 +1,13 @@
+{
+  "tag": "gpu_qwen15b_lora",
+  "model": "Qwen2.5-Coder-1.5B-Instruct+LoRA",
+  "condition": "lora",
+  "n": 40,
+  "execution_match": 0.55,
+  "invalid_sql_rate": 0.225,
+  "agg_navigation_rate": 0.9090909090909091,
+  "agg_eligible_n": 22,
+  "match_on_agg_eligible": 0.5454545454545454,
+  "match_on_other": 0.5555555555555556,
+  "mean_seconds_per_question": 4.095000000000001
+}

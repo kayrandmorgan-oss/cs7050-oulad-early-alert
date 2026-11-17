@@ -7,3 +7,5 @@ report/*.out
 report/pages/
 models/
 *.gguf
+report/*.fdb_latexmk
+report/*.fls

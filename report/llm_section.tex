@@ -17,9 +17,12 @@ return rows, and none duplicates a test question or its gold SQL.
 \textbf{What ran where.} The proposal's degradation path was used for the prompt-only conditions.
 Qwen2.5-Coder-7B-Instruct [6], the proposal's first-choice model, ran as a 4-bit GGUF (Q4\_K\_M) through
 \tt{llama.cpp} on the 2-vCPU build machine, with greedy decoding. The 1.5B sibling ran the same way as a size
-contrast. The LoRA condition needs a GPU. It is packaged for the course's NRP hub (\tt{text2sql/nrp/}): training
-script, the identical prompt, a generate-only evaluator, and a scorer that runs back on the warehouse machine.
-Its rows in Table~\ref{tab:llm} are filled from that run. No LoRA number is reported until it exists.
+contrast. The LoRA condition needs a GPU, so it ran on the course's NRP hub (\tt{text2sql/nrp/}) on one
+NVIDIA A10 in bf16. The adapter (rank 16, $\alpha$ 32, learning rate $2\times10^{-4}$, 3 epochs, 75 optimizer
+steps) trained in 555~s. Training loss fell from 0.82 to 0.0003, so the 200 template pairs were effectively
+memorized. The same job then generated SQL for all three conditions on the 1.5B model with greedy decoding.
+Scoring ran back on the warehouse machine, on a clean rebuild that re-scores the 7B run to the same 19/40. The
+whole job is covered by one credited course receipt (\hyperref[app:receipt]{Appendix}).
 
 \input{llm_table.tex}
 
@@ -32,6 +35,22 @@ on only 2, and every one of its 8 correct aggregate-eligible answers used an agg
 the aggregates \emph{discoverable}: the model knows they exist and when to prefer them. Discoverable is not the
 same as \emph{usable}, though. The 7B model was more accurate on the questions that did \emph{not} involve
 aggregates (61\%, 11/18) than on those that did (36\%, 8/22).
+
+\textbf{LoRA.} On the GPU the untuned 1.5B model reproduced its CPU result: 0/40 without the schema and 6/40 with
+it. After fine-tuning on the 200 template pairs, the same 1.5B model matched \textbf{22 of 40} questions
+(55\%). That is three more than the 4$\times$ larger 7B model managed with the schema alone. Invalid SQL fell from
+72.5\% to 22.5\%, and aggregate navigation rose from 55\% to 91\%. The whole gain is where the 7B model was weak: the
+LoRA model answered 12 of 22 aggregate-eligible questions (55\%, against 36\%). On the other 18 it is slightly
+behind (10, or 56\%, against 11). The two models
+are not simply ranked, though. Of the 27 questions either one answered, 14 were answered by both, 8 only by the
+LoRA model and 5 only by the 7B model. The surrogate-key error disappeared. None of the LoRA model's 18 failures
+compares \tt{week\_key} with a literal, against 6 of the 7B model's 21. Its 9 invalid queries are mostly the
+same ``attribute on the wrong table'' failure (for example \tt{highest\_education} on the enrollment) plus a few
+invented names. Two cautions apply. First, the training pairs come from 21 templates over this same warehouse, so
+the gain measures learning \emph{this} schema's conventions, not general SQL skill. Second, the adapter
+memorized its templates: on one question (T15) it returned a training query verbatim. The query happens to be
+correct, because module CCC has only the two presentations the question asks about, but it is counted as a
+match with that disclosure.
 
 \textbf{Where the design was not legible.} Each of the 7B model's 21 failures was classified by primary cause.
 \begin{itemize}
@@ -53,5 +72,6 @@ misreads. The result suggests three inexpensive design changes:
 \item State in the dictionary that \tt{week\_key} is not a week number.
 \item Include one worked aggregate query in the context.
 \end{itemize}
-Testing those changes is future work. The LoRA condition tests the other route, which is to teach the model the
-schema's conventions rather than to change the schema.
+Testing those changes is future work. The LoRA condition tested the other route, which is to teach the model
+the schema's conventions rather than to change the schema. At this scale it works: 200 synthetic pairs and nine
+minutes of training lift a 1.5B model past a 7B one on this warehouse.

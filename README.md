@@ -23,7 +23,7 @@ mining/weka_crosscheck.sh the same held-out test in Weka (cross-package validati
 mining/cluster.py         k-means (k = 2..10, elbow + silhouette), Ward cross-check, profiles
 mining/audit.py           post-hoc disparate-impact audit (aggregate only)
 text2sql/                 schema-context builder, 40 test questions, 200 LoRA pairs, evaluator, scorer
-text2sql/nrp/             LoRA training script + instructions for the NRP GPU hub
+text2sql/nrp/             LoRA training script + NRP instructions; results/ holds the Nov 16 run (training log, receipt)
 out/                      every number in the report (JSON/CSV logs, query results, predictions)
 figures/                  every figure in the report (PDF + PNG)
 report/                   LaTeX source and PDF of the final report

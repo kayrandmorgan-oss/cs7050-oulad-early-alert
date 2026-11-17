@@ -60,7 +60,7 @@ Name & Kay Rand Morgan \\ \hline
 Section & W01 \\ \hline
 Project title & From Clickstream to Early Alert: A Dimensional Warehouse and Mining Pipeline for Virtual Learning Environment Engagement Data \\ \hline
 Code & \url{https://github.com/kayrandmorgan-oss/cs7050-oulad-early-alert} \\ \hline
-Date & October 18, 2026 \\ \hline
+Date & November 16, 2026 \\ \hline
 \end{tabularx}
 
 \vspace{6pt}
@@ -78,7 +78,7 @@ engagement archetypes whose fail/withdraw rates range from 29\% to 65\%. The dis
 four-fifths screen for gender, deprivation (IMD) and disability, but not for age band. Given a schema
 context generated from the live warehouse, an open 7B code model answers \textbf{47.5\%} of 40 held-out analyst
 questions exactly and chooses the aggregate tables for 91\% of eligible questions. Without that context it
-answers none. The LoRA condition is packaged for the course GPU hub.}}
+answers none. LoRA fine-tuning on the course GPU hub lifts a 1.5B model from 15\% to \textbf{55\%}, past the 7B model.}}
 
 %======================================================================
 \section{Problem and research question}
@@ -539,11 +539,11 @@ above.
 \item \textbf{Compute.} The project was built and timed in a Linux container (2 vCPU, 8 GB) rather than on the
 Windows workstation. The code is portable, and connection settings come from environment variables.
 \item \textbf{LLM component.} The two prompt-only conditions ran on CPU with a 4-bit quantized model rather
-than on NRP. The LoRA condition is packaged for NRP and its results are pending (Section~\ref{sec:llm}).
+than on NRP. The LoRA condition ran on NRP as planned, in bf16 on an A10 (Section~\ref{sec:llm}).
 \end{itemize}
 
 \section{Conclusion}
-Five of the proposal's six success criteria are met in full, and the sixth in part:
+All six of the proposal's success criteria are met:
 \begin{itemize}
 \item The warehouse rebuilds with one command and passes every reconciliation assertion.
 \item All OLAP queries return verified results, with measured aggregate speed-ups of 1.4--688$\times$.
@@ -551,13 +551,35 @@ Five of the proposal's six success criteria are met in full, and the sixth in pa
 chart, a recall-oriented tuned threshold, and an 8.1-point margin over the baseline.
 \item $k=4$ is defensible and substantively characterized.
 \item The audit is reported, including the criterion it fails.
-\item \emph{In part:} the text-to-SQL evaluation reports execution match for two of the three conditions
-(no schema, schema in prompt). The LoRA condition awaits its NRP run.
+\item The text-to-SQL evaluation reports execution match for all three conditions (no schema, schema in
+prompt, LoRA + schema), with the LoRA run credited on NRP.
 \end{itemize}
 The substantive finding is narrower than the headline numbers often quoted for OULAD. Four weeks of behavior,
 measured \emph{relative to classmates}, identifies about four in five students who will fail or withdraw, at the
 cost of flagging about two-thirds of the class. The highest-risk fifth of the class (archetype C0) is visible from
 almost no data at all. For an advisor, the practical output is the three-rule tree plus the C0 list, not the AUC.
+
+\section*{Appendix: NRP run receipt}\phantomsection\label{app:receipt}
+The LoRA training and all three GPU generation conditions ran as one job wrapped in the course recorder
+(\tt{python -m cs7050\_receipt -- bash text2sql/nrp/run\_all\_nrp.sh}). Its receipt, copied unedited:
+{\scriptsize
+\begin{verbatim}
+==============================================================
+ CS 7050 RUN RECEIPT   135b47356c6b
+==============================================================
+ label        lora-text2sql-qwen15b
+ netid        kmorg136
+ login        kmorg136@students.kennesaw.edu
+ pod          jupyter-kmorg136-40students-2ekennesaw-2eedu
+ gpu          NVIDIA A10 x1
+ gpu uuid     GPU-e16bd8e9-e8ff-14da-eca9-df94d723829a
+ wall time    27.2 min
+ status       ok
+ credited     YES
+ saved        /home/shared/cs7050/receipts/kmorg136/20261117T010315Z_lora-text2sql-qwen15b_135b47356c6b.json
+==============================================================
+\end{verbatim}}
+The generated SQL, training log and this receipt are in \tt{text2sql/nrp/results/} and \tt{out/text2sql/}.
 
 \section*{AI use}
 This project was AI-assisted, as the proposal planned. Claude (Anthropic) wrote and ran the pipeline code, the

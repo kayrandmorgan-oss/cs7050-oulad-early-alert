@@ -1,0 +1,14 @@
+==============================================================
+ CS 7050 RUN RECEIPT   135b47356c6b
+==============================================================
+ label        lora-text2sql-qwen15b
+ netid        kmorg136
+ login        kmorg136@students.kennesaw.edu
+ pod          jupyter-kmorg136-40students-2ekennesaw-2eedu
+ gpu          NVIDIA A10 x1
+ gpu uuid     GPU-e16bd8e9-e8ff-14da-eca9-df94d723829a
+ wall time    27.2 min
+ status       ok
+ credited     YES
+ saved        /home/shared/cs7050/receipts/kmorg136/20261117T010315Z_lora-text2sql-qwen15b_135b47356c6b.json
+==============================================================

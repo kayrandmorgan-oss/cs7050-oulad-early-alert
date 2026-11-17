@@ -12,9 +12,9 @@ ROWS = [  # (tag, label, condition label, where)
     ("qwen7b_schema",    "Qwen2.5-Coder-7B (4-bit)",  "schema in prompt", "CPU"),
     ("qwen1.5b_none",    "Qwen2.5-Coder-1.5B (4-bit)","no schema",        "CPU"),
     ("qwen1.5b_schema",  "Qwen2.5-Coder-1.5B (4-bit)","schema in prompt", "CPU"),
-    ("gpu_qwen15b_none",   "Qwen2.5-Coder-1.5B (fp16)",     "no schema",        "NRP GPU"),
-    ("gpu_qwen15b_schema", "Qwen2.5-Coder-1.5B (fp16)",     "schema in prompt", "NRP GPU"),
-    ("gpu_qwen15b_lora",   "Qwen2.5-Coder-1.5B (fp16)",     "LoRA + schema",    "NRP GPU"),
+    ("gpu_qwen15b_none",   "Qwen2.5-Coder-1.5B (bf16)",     "no schema",        "NRP GPU"),
+    ("gpu_qwen15b_schema", "Qwen2.5-Coder-1.5B (bf16)",     "schema in prompt", "NRP GPU"),
+    ("gpu_qwen15b_lora",   "Qwen2.5-Coder-1.5B (bf16)",     "LoRA + schema",    "NRP GPU"),
 ]
 def pct(x): return "---" if x is None else f"{100*x:.1f}\\%"
 lines = [r"\begin{table}[H]\centering\small",
